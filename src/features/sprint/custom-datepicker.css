@@ -1,0 +1,22 @@
+/* 커스텀 DatePicker 스타일 */
+.custom-datepicker {
+  border: 2px solid #d1d5db;
+}
+
+.custom-datepicker .react-datepicker__day {
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+}
+
+.custom-datepicker .react-datepicker__day--selected {
+  background: #f7cc10;
+  border-radius: 50%;
+  font-weight: 700;
+  border: 2px solid transparent;
+}
+
+.custom-datepicker .react-datepicker-popper {
+  z-index: 9999;
+}
