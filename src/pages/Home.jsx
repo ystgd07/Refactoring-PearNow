@@ -2,7 +2,6 @@ import React from 'react';
 import Gnb from '../ui/Gnb';
 import Snb from '../ui/Snb';
 import { Outlet } from 'react-router-dom';
-import SideModal from '../features/newproject/SideModal';
 import {
   useOepnUpdateModal,
   useOpenMainPage,
@@ -14,11 +13,6 @@ import { fetchUserData } from '../apis/apiUserData';
 import { useMyRole, useUserMain } from '../store/UserMain/store';
 import DropDownUser from '../ui/DropDownUser';
 import { getUserImg } from '../apis/apiAuth';
-import {
-  useBackLogPageRes,
-  useBackNumStore,
-  useProjectInBackLog,
-} from '../store/BackLogStore/store';
 
 export default function Home() {
   const { openMainPage } = useOpenMainPage((state) => state);

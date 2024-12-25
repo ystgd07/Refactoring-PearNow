@@ -7,14 +7,21 @@ let accessToken = '';
 
 //로그인,계정생성 api
 export async function registApi({ id, pw, name }) {
-  const res = await axios.post(
-    `${process.env.REACT_APP_API_DOMAIN}/api/user/join`,
-    {
-      id,
-      pw,
-      name,
-    },
-  );
+  try {
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_DOMAIN}/register`,
+      {
+        id,
+        pw,
+        name,
+      },
+    );
+    console.log('res', res);
+    return res.data; // 응답 데이터 반환
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error; // 에러를 상위로 전파
+  }
 }
 
 export async function loginApi(form) {
