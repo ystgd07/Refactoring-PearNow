@@ -1,5 +1,54 @@
 import { create } from 'zustand';
 
+interface PjtObj {
+  title: string;
+  detail: string;
+  peer_id: Record<string, string>;
+  start_date: Date;
+  end_date: Date;
+}
+
+interface CreatePjtState {
+  pjtObj: PjtObj;
+  pjtObjFake: any[];
+  noRequestPeerID: string[];
+  userList: any[];
+  selectedUser: Record<string, string>;
+  isValidPjt1: boolean;
+  isValidPjt2: boolean;
+  isSearchResultOpen: boolean;
+  peerName: string;
+  page: number;
+}
+
+interface LoginObj {
+  id: string;
+  pw: string;
+}
+
+interface CreateAccountObj extends LoginObj {
+  name: string;
+}
+
+interface LoginAndCreateAccountState {
+  loginObj: LoginObj;
+  createAccountObj: CreateAccountObj;
+  checkPw: string;
+  isValidLogin: boolean;
+  isValidCreateAccount: boolean;
+  setpwCheck: boolean;
+  setLoginValid: (loginObj: LoginObj) => void;
+  setCreateAccountValid: (createAccountObj: CreateAccountObj) => void;
+  setId: (id: string) => void;
+  setpw: (pw: string) => void;
+  setAccountId: (id: string) => void;
+  setAccountpw: (pw: string) => void;
+  setName: (name: string) => void;
+  setCheckPw: (checkPw: string) => void;
+  setCheckPwVaild: (checkPw: string) => void;
+}
+
+
 const initialCreatePjt = {
   pjtObj: {
     title: '',
@@ -180,7 +229,7 @@ export const useCreatePjtOne = create((set) => ({
   setPrevPage: (page) => set((state) => ({ page: 1 })),
 }));
 
-export const useLoginAndCreateAccount = create((set) => ({
+export const useLoginAndCreateAccount = create<LoginAndCreateAccountState>((set) => ({
   loginObj: {
     id: '',
     pw: '',
