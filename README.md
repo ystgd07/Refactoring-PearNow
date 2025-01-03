@@ -5,6 +5,8 @@
 
 ![image](https://github.com/user-attachments/assets/76ad10a4-9cdd-4a01-8080-f6cfea168ae1)
 
-<h2>2024-12-26</h2>
+<h2>2024-12-26~2024-01-03</h2>
 <p>Javascript ➜ TypeScrip</p>
-<p>메인페이지 작업중</p>
+<p>JWT 인증방식 도입 (Refresh Token 적용방식)</p>
+
+![Untitled diagram-2025-01-03-140928](https://github.com/user-attachments/assets/e146c126-9f63-4dee-8da9-0d5a9efa81b3)
