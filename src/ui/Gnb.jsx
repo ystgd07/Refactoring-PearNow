@@ -3,14 +3,20 @@ import { useImage, useUserMain } from '../store/UserMain/store';
 import { GrUserSettings } from 'react-icons/gr';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLoginAndCreateAccount } from '../store/store';
+import { useAuthStore } from '../store/AuthStore/authStore';
 
 export default function Gnb() {
   const { userMainData, setIsOpenDropdown, headerUserImg } = useUserMain(
     (state) => state,
   );
+  const { createAccountObj } = useLoginAndCreateAccount((state) => state);
+  console.log('createAccountObj', createAccountObj);
+  
   const { setUserImg, stateImageData } = useImage((state) => state);
   console.log('headerUserImg', headerUserImg);
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   return (
     <header className="relative items-center justify-between pl-5 pr-5 bg-white cursor-pointer mb-2">
@@ -90,7 +96,7 @@ export default function Gnb() {
                     </button>
                   </li>
                   <li className="pl-3 text-xl font-semibold text-gray-800">
-                    {userMainData.name}
+                    {user?.name || '사용자'}
                   </li>
                 </ui>
               </div>

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export async function fetchUserData() {
+export async function fetchUserData(id) {
   const res = await axios.get(
-    `${process.env.REACT_APP_API_DOMAIN}/api/user/detail`,
+    `${process.env.REACT_APP_API_DOMAIN}/user/${id}`,
   );
   console.log('res', res);
   return res.data;

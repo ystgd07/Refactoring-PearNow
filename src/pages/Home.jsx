@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Gnb from '../ui/Gnb';
 import Snb from '../ui/Snb';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
   useOepnUpdateModal,
   useOpenMainPage,
   useOpenMypage,
+  useLoginAndCreateAccount,
 } from '../store/store';
 import ModifyModal from '../ui/ModifyModal';
 import { useQuery } from 'react-query';
@@ -13,11 +14,17 @@ import { fetchUserData } from '../apis/apiUserData';
 import { useMyRole, useUserMain } from '../store/UserMain/store';
 import DropDownUser from '../ui/DropDownUser';
 import { getUserImg } from '../apis/apiAuth';
+import { useAuthStore } from '../store/AuthStore/authStore';
 
 export default function Home() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
   const { openMainPage } = useOpenMainPage((state) => state);
   const { openMypage } = useOpenMypage((state) => state);
   const { openUpdateModal } = useOepnUpdateModal((state) => state);
+  const { loggedInUserId } = useLoginAndCreateAccount(state => ({
+    loggedInUserId: state.loggedInUserId
+  }));
 
   const {
     setUserMainData,
@@ -27,38 +34,36 @@ export default function Home() {
     setImageOfUser,
   } = useUserMain((state) => state);
 
-  const { data: userData, isLoadingUserData } = useQuery(
-    ['userData'],
-    fetchUserData,
+  const { data: userData } = useQuery(
+    ['userData', loggedInUserId],
+    () => fetchUserData(loggedInUserId),
     {
+      enabled: !!loggedInUserId && isAuthenticated,
       onSuccess: (data) => {
         setUserMainData(data?.data);
-        console.log('userData : ', data);
       },
-      onError: (error) => {
-        console.log('error : ', error);
-      },
-    },
+      retry: false
+    }
   );
 
-  console.log('userDatauserData', userData);
+  const { data: userImage } = useQuery(
+    ['userImg'], 
+    getUserImg, 
+    {
+      enabled: !!userData && isAuthenticated,
+      onSuccess: (data) => {
+        setImageOfUser(data?.data?.image);
+      },
+      retry: false
+    }
+  );
 
-  const { data: userImage2 } = useQuery(['userImg'], getUserImg, {
-    enabled: !!userData,
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
-    onSuccess: (data) => {
-      // const reader = new FileReader();
-      // reader.readAsBinaryString(data);
-      console.log('userImg :', data);
-
-      setImageOfUser(data?.data?.image);
-    },
-    onError: (error) => {
-      console.log('error:', error);
-    },
-  });
-
-  // console.log('userImage : ', userImage);
   return (
     <>
       <Gnb />
@@ -69,7 +74,6 @@ export default function Home() {
           {openUpdateModal && <ModifyModal />}
         </div>
         {isOpenDropdown && <DropDownUser />}
-        {/* {openMainPage ? <SideModal /> : ''} */}
       </div>
     </>
   );

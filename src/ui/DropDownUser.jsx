@@ -3,25 +3,20 @@ import { GrUserSettings } from 'react-icons/gr';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { useUserMain } from '../store/UserMain/store';
 import { useNavigate } from 'react-router-dom';
-import { logoutApi } from '../apis/apiAuth';
-import { useMutation, useQueryClient } from 'react-query';
+import { useAuthStore } from '../store/AuthStore/authStore';
 
 export default function DropDownUser() {
   const { userMainData, setIsOpenDropdown } = useUserMain((state) => state);
+  const { logout } = useAuthStore();
   const navigate = useNavigate();
 
-  const { mutate: logout, isLoading: islogout } = useMutation(
-    () => logoutApi(),
-    {
-      onSuccess: (user) => {
-        console.log('Success logout : ', user);
-        navigate('/');
-      },
-      onError: (error) => {
-        console.log('Error', error);
-      },
-    },
-  );
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <div
@@ -54,11 +49,10 @@ export default function DropDownUser() {
           }}
         >
           <p
-            className="mt-2 text-sm font-bold "
+            className="mt-2 text-sm font-bold"
             onClick={(e) => {
               e.stopPropagation();
-              logout();
-              console.log('로그아웃');
+              handleLogout();
             }}
           >
             로그아웃

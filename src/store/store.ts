@@ -30,7 +30,7 @@ interface CreateAccountObj extends LoginObj {
   name: string;
 }
 
-interface LoginAndCreateAccountState {
+export interface LoginAndCreateAccountState {
   loginObj: LoginObj;
   createAccountObj: CreateAccountObj;
   checkPw: string;
@@ -46,6 +46,8 @@ interface LoginAndCreateAccountState {
   setName: (name: string) => void;
   setCheckPw: (checkPw: string) => void;
   setCheckPwVaild: (checkPw: string) => void;
+  loggedInUserId: string;
+  setLoggedInUserId: (id: string) => void;
 }
 
 
@@ -243,6 +245,7 @@ export const useLoginAndCreateAccount = create<LoginAndCreateAccountState>((set)
   isValidLogin: false,
   isValidCreateAccount: false,
   setpwCheck: false,
+  loggedInUserId: '',
 
   setLoginValid: (loginObj) =>
     set((state) => ({
@@ -280,6 +283,8 @@ export const useLoginAndCreateAccount = create<LoginAndCreateAccountState>((set)
     set((state) => ({
       setpwCheck: state.createAccountObj.pw === state.checkPw,
     })),
+
+  setLoggedInUserId: (id: string) => set({ loggedInUserId: id }),
 }));
 
 // 백로그 이슈만들기 모달
