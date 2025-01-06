@@ -6,7 +6,7 @@
 ![image](https://github.com/user-attachments/assets/76ad10a4-9cdd-4a01-8080-f6cfea168ae1)
 
 <h2>2024-12-26~2024-01-03</h2>
-<p>- Javascript ➜ TypeScrip</p>
+<p>- Javascript ➜ TypeScript</p>
 <p>- JWT 인증방식 구현 (Refresh Token 적용방식)</p>
 <p>- apiInterceptor 구현</p>
 <p>- 로그인 이후, 페이지 랜더링 시 토큰 유효성 체크 구현(PrivateRoute 컴포넌트)</p>
