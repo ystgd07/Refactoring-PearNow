@@ -28,42 +28,30 @@ function AppRoutes() {
 
   useEffect(() => {
     const init = async () => {
-      console.log('=== Page Load/Refresh Detection ===');
-      console.log('Current localStorage state:', {
-        accessToken: localStorage.getItem('accessToken'),
-        refreshToken: localStorage.getItem('refreshToken')
-      });
-
-      console.log('Starting auth initialization...');
       const result = await initializeAuth();
-      console.log('Auth initialization result:', result);
     };
 
     init();
   }, [initializeAuth]);
 
-  // 초기화 중에는 로딩 표시
   if (initializing) {
-    console.log('App is in initializing state');
     return <div>Loading...</div>;
   }
 
-  console.log('App render with auth state:', { isAuthenticated, initializing });
-
   return (
     <Routes>
-      <Route 
-        path="/" 
-        element={isAuthenticated ? <Navigate to="/home/main" replace /> : <Login />} 
-      />
-      <Route 
-        path="/signup" 
-        element={<SignUp />} 
-      />
-      <Route 
-        path="/home/*" 
-        element={<PrivateRoute><Home /></PrivateRoute>} 
-      />
+      <Route path="/" element={isAuthenticated ? <Navigate to="/home/main" replace /> : <Login />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>}>
+        <Route path="main" element={<Main />} />
+        <Route path="usermain" element={<UserMain />} />
+        <Route path="backlog" element={<BackLog />} />
+        <Route path="feedback" element={<PeerFeedback />} />
+        <Route path="sprint" element={<Sprint />} />
+        <Route path="kanban" element={<Kanban />} />
+        <Route path="burndown" element={<BurnDown />} />
+        {/* 다른 라우트들... */}
+      </Route>
     </Routes>
   );
 }

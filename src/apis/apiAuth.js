@@ -1,3 +1,6 @@
+//Sunset 파일
+//AuthStore.ts 로 대체 
+
 import api from './AxiosInterCeptor/apiInterCeptor';
 import { format } from 'date-fns';
 

@@ -1,7 +1,8 @@
 import { create } from 'zustand';
-// /api/user/detail
+import api from '../../apis/AxiosInterCeptor/apiInterCeptor';
+import { toast } from 'react-hot-toast';
 
-const initialUserMain = {
+const initialUserState = {
   userMainData: {
     id: '',
     pw: '',
@@ -12,170 +13,159 @@ const initialUserMain = {
     image: '',
     grade: '',
     reg_date: new Date(),
-    mod_date: new Date(),
+    mod_date: null,
   },
-  userMainUpdateData: {
-    name: '',
-    mail: '',
-    phone: '',
-    team: '',
-    image: '',
-  },
+  modalState: '',
   updateMail: '',
   updatePhone: '',
   updateTeam: '',
-  isOpenDropdown: false,
   isOpenUpdateModal: false,
-  modalState: '',
-};
-
-const initialProject = {
-  projectDataList: [
-    {
-      user_id: '',
-      owner_image: '',
-      owner_id: '',
-      owner_name: '',
-      project_title: '',
-      start_date: '',
-      end_date: '',
-      status: '',
-    },
-  ],
-};
-
-export const useProject = create((set) => ({
-  ...initialProject,
-
-  setProjectDataList: (projectDataList) =>
-    set((state) => ({ projectDataList: projectDataList })),
-
-  reset: () => set((state) => ({ ...initialProject })),
-}));
-
-export const useUserMain = create((set) => ({
-  ...initialUserMain,
   headerUserImg: '',
-  setUpdateDataOfUser: (updateDataOfUser) =>
-    set((state) => ({ updateDataOfUser })),
+  isOpenDropdown: false,
+};
 
-  setUserMainUpdateData: (userMainUpdateData) =>
-    set((state) => ({ userMainUpdateData: userMainUpdateData })),
-  setModalState: (modalState) => set((state) => ({ modalState: modalState })),
+export const useUserMain = create((set, get) => ({
+  ...initialUserState,
 
-  setIsOpenUpdateModal: (isOpenUpdateModal) =>
-    set((state) => ({ isOpenUpdateModal: !state.isOpenUpdateModal })),
+  // 상태 업데이트 액션
+  setUserMainData: (data) => set({ userMainData: data }),
+  setModalState: (state) => set({ modalState: state }),
+  setUpdateMail: (mail) => set({ updateMail: mail }),
+  setUpdatePhone: (phone) => set({ updatePhone: phone }),
+  setUpdateTeam: (team) => set({ updateTeam: team }),
+  setIsOpenUpdateModal: () => set((state) => ({ isOpenUpdateModal: !state.isOpenUpdateModal })),
+  setImageOfUser: (image) => set({ headerUserImg: image }),
+  setIsOpenDropdown: () => set((state) => ({ isOpenDropdown: !state.isOpenDropdown })),
 
-  setIsOpenDropdown: (isOpenDropdown) =>
-    set((state) => ({ isOpenDropdown: !state.isOpenDropdown })),
-
-  setUpdateMail: (updateMail) =>
-    set((state) => ({
-      updateMail: updateMail,
-    })),
-
-  setUpdatePhone: (updatePhone) =>
-    set((state) => ({
-      updatePhone: updatePhone,
-    })),
-
-  setUpdateTeam: (updateTeam) =>
-    set((state) => ({
-      updateTeam: updateTeam,
-    })),
-
-  setImageOfUser: (userImg) =>
-    set((state) => ({
-      headerUserImg: userImg,
-    })),
-
-  setUserMainData: (userMainData) =>
-    set((state) => ({ userMainData: userMainData })),
-
-  setUserMailOfMainData: (mail) =>
-    set((state) => ({
-      userMainData: {
-        ...state.userMainData,
-        mail: mail,
-      },
-    })),
-
-  setUserPhoneOfMainData: (phone) =>
-    set((state) => ({
-      userMainData: {
-        ...state.userMainData,
-        phone: phone,
-      },
-    })),
-
-  setUserTeamOfMainData: (team) =>
-    set((state) => ({
-      userMainData: {
-        ...state.userMainData,
-        team: team,
-      },
-    })),
-
-  reset: () => set((state) => ({ ...initialUserMain })),
-}));
-
-export const useStatusUpdate = create((set) => ({
-  statusUpdateData: {
-    projectNumber: '',
-    acceptStatus: '',
-    declineStatus: '',
+  // API 액션
+  fetchUserData: async (userId) => {
+    try {
+      const response = await api.get(`/api/user/detail/${userId}`);
+      set({ userMainData: response.data });
+      return response.data;
+    } catch (error) {
+      toast.error('사용자 정보를 불러오는데 실패했습니다.');
+      throw error;
+    }
   },
-  setUpdateAcceptStatus: (acceptStatus) =>
-    set((state) => ({
-      statusUpdateData: {
-        ...state.statusUpdateData,
-        acceptStatus: acceptStatus,
-      },
-    })),
-  setUpdateDeclineStatus: (declineStatus) =>
-    set((state) => ({
-      statusUpdateData: {
-        ...state.statusUpdateData,
-        declineStatus: declineStatus,
-      },
-    })),
+
+  updateUserData: async (data, userId) => {
+    try {
+      const response = await api.put(`/api/user/update/${userId}`, data);
+      
+      // 성공 시 상태 업데이트
+      set((state) => ({
+        userMainData: {
+          ...state.userMainData,
+          ...response.data
+        }
+      }));
+      
+      toast.success('정보가 성공적으로 업데이트되었습니다.');
+      return response.data;
+    } catch (error) {
+      toast.error('정보 업데이트에 실패했습니다.');
+      throw error;
+    }
+  },
+
+  updateUserImage: async (file, userId, filename) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('filename', filename);
+
+      const response = await api.put(`/api/user/image/${userId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      set((state) => ({
+        userMainData: {
+          ...state.userMainData,
+          image: response.data.image
+        }
+      }));
+
+      toast.success('프로필 이미지가 업데이트되었습니다.');
+      return response.data;
+    } catch (error) {
+      toast.error('이미지 업로드에 실패했습니다.');
+      throw error;
+    }
+  },
+
+  // 상태 초기화
+  resetUserState: () => {
+    set(initialUserState);
+  }
 }));
 
+// 이미지 관련 상태 관리
 export const useImage = create((set) => ({
   stateImageData: {
     userImg: '',
   },
-
-  setUserImg: (imgFile) =>
+  setUserImg: (userImg) =>
     set((state) => ({
       stateImageData: {
-        userImg: imgFile,
+        ...state.stateImageData,
+        userImg,
       },
     })),
 }));
 
-// 권한 받기
-const initialMyRole = {
-  myRoleDataList: {
-    id: '',
-    pw: null,
-    name: null,
-    mail: null,
-    phone: null,
-    team: null,
-    image: null,
-    grade: null,
-    reg_date: null,
-    mod_date: null,
-    role: '',
-    status: null,
-    newaccesstoken: '',
-  },
-};
+// 프로젝트 관련 상태 관리
+export const useProject = create((set) => ({
+  projectDataList: [],
+  setProjectDataList: (projectDataList) => set({ projectDataList }),
+}));
 
+// 역할 관련 상태 관리
 export const useMyRole = create((set) => ({
-  ...initialMyRole,
+  role: '',
+  myRoleDataList: [],
+  setMyRole: (role) => set({ role }),
+  setMyRoleDataList: (myRoleDataList) => set({ myRoleDataList }),
+}));
 
-  setMyRole: (data) => set((state) => ({ role: data })),
-  setMyRoleDataList: (res) => set((state) => ({ myRoleDataList: res })),
+// 상태 업데이트 관련 store 추가
+export const useStatusUpdate = create((set) => ({
+  statusUpdateData: null,
+  updateDeclineStatus: null,
+
+  setStatusUpdateData: (data) => set({ statusUpdateData: data }),
+  setUpdateDeclineStatus: (status) => set({ updateDeclineStatus: status }),
+
+  // API 액션
+  updateStatus: async (status, projectNumber, role) => {
+    try {
+      const response = await api.put(`/api/status/update`, {
+        status,
+        projectNumber,
+        role
+      });
+      
+      set({ statusUpdateData: response.data });
+      return response.data;
+    } catch (error) {
+      toast.error('상태 업데이트에 실패했습니다.');
+      throw error;
+    }
+  },
+
+  declineStatus: async (projectNumber) => {
+    try {
+      const response = await api.put(`/api/status/decline`, {
+        projectNumber
+      });
+      
+      set({ updateDeclineStatus: response.data });
+      return response.data;
+    } catch (error) {
+      toast.error('거절 처리에 실패했습니다.');
+      throw error;
+    }
+  }
 }));

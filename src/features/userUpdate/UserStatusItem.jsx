@@ -8,37 +8,28 @@ import { FaUserTimes } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 export default function UserStatusItem({ item, refetch }) {
-  const { setStatusUpdateData, setUpdateDeclineStatus, statusUpdateData } =
-    useStatusUpdate((state) => state);
+  const { setStatusUpdateData, setUpdateDeclineStatus, statusUpdateData, updateStatus, declineStatus } = useStatusUpdate();
 
   const { mutate: statusAccepUpdate, isAccepLoading } = useMutation(
-    () => fetchStatusUpdateData('ACCEPT', item?.project_number, item?.role),
+    () => updateStatus('ACCEPT', item?.project_number, item?.role),
     {
-      onSuccess: (user) => {
-        console.log('Success : ', user);
+      onSuccess: (data) => {
         toast.success(`${item?.project_title} 초대 승낙`);
         refetch();
-        setStatusUpdateData(user);
-      },
-      onError: (error) => {
-        console.log('Error', error);
-      },
-    },
+        setStatusUpdateData(data);
+      }
+    }
   );
 
   const { mutate: statusDeclineUpdate, isDeclineLoading } = useMutation(
-    () => fetchStatusUpdateData('DECLINE', item?.project_number),
+    () => declineStatus(item?.project_number),
     {
-      onSuccess: (user) => {
-        console.log('Success : ', user);
+      onSuccess: (data) => {
         refetch();
-        setUpdateDeclineStatus(user);
+        setUpdateDeclineStatus(data);
         toast.error(`${item?.project_title} 초대 거절`);
-      },
-      onError: (error) => {
-        console.log('Error', error);
-      },
-    },
+      }
+    }
   );
   console.log('UserStatusItem : ', item);
   return (

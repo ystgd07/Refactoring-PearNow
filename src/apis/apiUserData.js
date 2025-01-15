@@ -9,7 +9,7 @@ export async function fetchUserData(id) {
 }
 
 export async function fetchUserUpdateData(data, userMainDataid) {
-  // console.log('updatedate!!', data);
+
   const formData = new FormData();
   const obj = {
     mail: data.userMemberDto.mail,
