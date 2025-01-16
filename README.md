@@ -24,4 +24,4 @@
   <li>대상 컴포넌트 마운트시 ID 유효성체크 후, URL 정보 가져옴</li>
 </ul>
 
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/e7e27505-a252-4f18-927b-81e24f225dfe)
