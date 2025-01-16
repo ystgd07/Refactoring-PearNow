@@ -15,7 +15,6 @@
 ![Untitled diagram-2025-01-03-140928](https://github.com/user-attachments/assets/e146c126-9f63-4dee-8da9-0d5a9efa81b3)
 
 
-![Uploading image.png…]()
 
 <h2>2024-01-03 ~ 2024-01-17</h2>
 <p>(AS-IS) apiUserData.js ➔ (TO-BE) UserMain/store.js </p>
@@ -24,3 +23,5 @@
   <li>UserHeader.js 컴포넌트 UseEffect 로직 추가(50분 주기로 Pre-signed URL URL 갱신)</li>
   <li>대상 컴포넌트 마운트시 ID 유효성체크 후, URL 정보 가져옴</li>
 </ul>
+
+![Uploading image.png…]()
