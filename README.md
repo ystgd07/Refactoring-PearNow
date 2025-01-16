@@ -15,6 +15,8 @@
 ![Untitled diagram-2025-01-03-140928](https://github.com/user-attachments/assets/e146c126-9f63-4dee-8da9-0d5a9efa81b3)
 
 
+![Uploading image.png…]()
+
 <h2>2024-01-03 ~ 2024-01-17</h2>
 <p>(AS-IS) apiUserData.js ➔ (TO-BE) UserMain/store.js </p>
 <p>(AS-IS) 서버요청으로 IMG 파일 fetch ➔ (TO-BE) Pre-signed URL 방식으로 변경  (서버부하 ↓)</p>
