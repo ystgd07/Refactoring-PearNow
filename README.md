@@ -20,7 +20,7 @@
 <p>(AS-IS) apiUserData.js ➔ (TO-BE) UserMain/store.js </p>
 <p>(AS-IS) 서버요청으로 IMG 파일 fetch ➔ (TO-BE) Pre-signed URL 방식으로 변경  (서버부하 ↓)</p>
 <ul>
-  <li>UserHeader.js 컴포넌트 UseEffect 로직 추가(50분 주기로 Pre-signed URL URL 갱신)</li>
+  <li>UserHeader.js 컴포넌트 UseEffect 로직 추가(50분 주기로 Pre-signed URL 갱신)</li>
   <li>대상 컴포넌트 마운트시 ID 유효성체크 후, URL 정보 가져옴</li>
 </ul>
 
