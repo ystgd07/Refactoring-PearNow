@@ -5,7 +5,7 @@
 
 ![image](https://github.com/user-attachments/assets/76ad10a4-9cdd-4a01-8080-f6cfea168ae1)
 
-<h2>2024-12-26~2024-01-03</h2>
+<h2>2024-12-26~2025-01-03</h2>
 <p>- Javascript ➜ TypeScript</p>
 <p>- JWT 인증방식 구현 (Refresh Token 적용방식)</p>
 <p>- apiInterceptor 구현</p>
@@ -16,7 +16,7 @@
 
 
 
-<h2>2024-01-03 ~ 2024-01-17</h2>
+<h2>2025-01-03 ~ 2025-01-17</h2>
 <p>(AS-IS) apiUserData.js ➔ (TO-BE) UserMain/store.js </p>
 <p>(AS-IS) 서버요청으로 IMG 파일 fetch ➔ (TO-BE) Pre-signed URL 방식으로 변경  (서버부하 ↓)</p>
 <ul>
