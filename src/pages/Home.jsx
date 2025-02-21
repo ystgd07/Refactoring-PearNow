@@ -22,8 +22,9 @@ export default function Home() {
   const { openMainPage } = useOpenMainPage((state) => state);
   const { openMypage } = useOpenMypage((state) => state);
   const { openUpdateModal } = useOepnUpdateModal((state) => state);
-  const { loggedInUserId } = useLoginAndCreateAccount(state => ({
-    loggedInUserId: state.loggedInUserId
+
+  const { loggedInUserId } = useLoginAndCreateAccount((state) => ({
+    loggedInUserId: state.loggedInUserId,
   }));
 
   const {
@@ -42,21 +43,17 @@ export default function Home() {
       onSuccess: (data) => {
         setUserMainData(data?.data);
       },
-      retry: false
-    }
+      retry: false,
+    },
   );
 
-  const { data: userImage } = useQuery(
-    ['userImg'], 
-    getUserImg, 
-    {
-      enabled: !!userData && isAuthenticated,
-      onSuccess: (data) => {
-        setImageOfUser(data?.data?.image);
-      },
-      retry: false
-    }
-  );
+  const { data: userImage } = useQuery(['userImg'], getUserImg, {
+    enabled: !!userData && isAuthenticated,
+    onSuccess: (data) => {
+      setImageOfUser(data?.data?.image);
+    },
+    retry: false,
+  });
 
   useEffect(() => {
     if (!isAuthenticated) {

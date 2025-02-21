@@ -25,7 +25,6 @@ export default function UserHeader() {
           }
         }
       } catch (error) {
-        console.error('사용자 데이터 로드 실패:', error);
         toast.error('사용자 정보를 불러오는데 실패했습니다.');
       }
     };

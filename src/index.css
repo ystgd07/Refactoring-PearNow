@@ -19,8 +19,25 @@
   html {
     font-family: 'SUITE', sans-serif;
     background-color: #f1f1f1;
+    height: 100%;
   }
+  
+  body, #root {
+    height: 100%;
+  }
+
   ::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* Snb와 Main 컨텐츠를 위한 레이아웃 클래스 */
+@layer components {
+  .main-layout {
+    @apply min-h-screen flex;
+  }
+  
+  .main-content {
+    @apply flex-1 flex flex-col;
   }
 }
